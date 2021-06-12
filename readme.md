@@ -9,6 +9,7 @@
 ### Shortcomings 
 1. mind your scope: long-living reference
 2. mind your scope: no anchor
+3. thead-safety needs to be properly studied if you have a read-write API 
 
 # References and acknowledgements
 

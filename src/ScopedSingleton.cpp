@@ -4,6 +4,7 @@
 
 namespace {
     void remoteSend(const json& log) {
+        // simulate the remote send
         std::cout << pretty_print(log) << std::endl;
     }
 }
