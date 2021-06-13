@@ -70,16 +70,20 @@ namespace {
       };
     };
 
-    HTTPHandler businessHandler = [](HTTPResponse& resp, const HTTPRequest& req) {
+    void printReqResp(const HTTPResponse& resp, const HTTPRequest& req) {
         std::cout << "REQ ---------------------------------------" << std::endl << std::endl;
         std::cout << "HTTP "s << HTTPMethodStr(req.method) << " "s << req.uri
                   << std::endl << std::endl
                   << req.body << std::endl << std::endl;
         std::cout << "ENDREQ -------------------------------------" << std::endl;
-        resp = getDefaultResponse();
         std::cout << "RESP----------------------------------------" << std::endl << std::endl;
         std::cout << resp.status << std::endl << resp.body << std::endl << std::endl;
         std::cout << "RESPEND-------------------------------------" << std::endl;
+    }
+
+    HTTPHandler businessHandler = [](HTTPResponse& resp, const HTTPRequest& req) {
+        resp = getDefaultResponse();
+        printReqResp(resp, req);
     };
 }
 
@@ -114,4 +118,47 @@ TEST_F(HTTPTest, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScop
     ASSERT_TRUE(ss->contains("URI"));
     ASSERT_TRUE(ss->contains("HTTPResponseHeaders"));
     ASSERT_TRUE(ss->contains("HTTPStatus"));
+}
+
+TEST_F(HTTPTest, ExceptionsDontBlockEventSending) {
+    HTTPHandler throwingHandler = [](HTTPResponse& resp, const HTTPRequest& req) {
+        throw 1;
+    };
+    // simulate handler called
+    auto handler = commonLogging(throwingHandler);
+    HTTPResponse resp;
+    ASSERT_ANY_THROW(handler(resp, getDefaultRequest()));
+}
+
+TEST_F(HTTPTest, WatchYourScopes) {
+    // this handler simply log the "name" and the "age" json attributes to the StructuredLog
+    HTTPHandler businessTransaction = [](HTTPResponse& resp, const HTTPRequest& req) {
+      auto aJsonBody = jsoncons::json::parse(req.body);
+      (*StructuredLog())["name"] = aJsonBody["name"].as<std::string>();
+      (*StructuredLog())["age"] = aJsonBody["age"].as<int>();
+    };
+
+
+    // anchor log here to simulate an instance that outlives the transaction scopes
+    auto ss = StructuredLog();
+    // first transaction
+    {
+        auto req = getDefaultRequest();
+        req.body = R"({"name": "John", "surname": "Taylor", "age": 30})";
+        HTTPResponse resp;
+        businessTransaction(resp, req);
+    }
+
+    // second transaction
+    {
+        auto req = getDefaultRequest();
+        req.body = R"({"name": "Jack", "surname": "Taylor", "age": 20})";
+        HTTPResponse resp;
+        businessTransaction(resp, req);
+    }
+
+    ASSERT_TRUE(ss->contains("name"));
+    ASSERT_TRUE(ss->contains("age"));
+    ASSERT_EQ((*ss)["name"].as<std::string>(), "Jack");
+    ASSERT_EQ((*ss)["age"].as<int>(), 20);
 }
