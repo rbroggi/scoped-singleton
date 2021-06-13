@@ -9,10 +9,6 @@ namespace {
     }
 }
 
-void hello() {
-    std::cout << "Hello, World!" << std::endl;
-}
-
 
 std::shared_ptr<json> StructuredLog() {
     // static reference to a non-owning json
@@ -32,10 +28,3 @@ std::shared_ptr<json> StructuredLog() {
     return aLog;
 }
 
-HTTPHandler ScopedLogHandler(HTTPHandler handler) {
-    return [&handler](HTTPResponse& resp, const HTTPRequest& req) {
-      auto anchor = StructuredLog();
-      handler(resp, req);
-      //after
-    };
-}

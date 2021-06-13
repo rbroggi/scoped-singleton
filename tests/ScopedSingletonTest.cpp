@@ -12,17 +12,8 @@ namespace {
 
 using std::string_literals::operator""s;
 
-class ScopedSingletonTest : public ::testing::Test {
-
-protected:
-    virtual void SetUp() {}
-
-    virtual void TearDown() {}
-
-};
-
 // Non-anchored disjoint scopes
-TEST_F(ScopedSingletonTest, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScopes){
+TEST(ScopedSingletonTest, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScopes){
     // scope 1
     {
         auto ss = StructuredLog();
@@ -45,7 +36,7 @@ TEST_F(ScopedSingletonTest, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredD
 }
 
 // Anchored disjoint scopes
-TEST_F(ScopedSingletonTest, AnchoredDisjointScopes){
+TEST(ScopedSingletonTest, AnchoredDisjointScopes){
     // scope 0
     auto ss = StructuredLog();
     ASSERT_NE(nullptr, ss);
@@ -73,7 +64,7 @@ TEST_F(ScopedSingletonTest, AnchoredDisjointScopes){
 }
 
 // method call share instance with anchor
-TEST_F(ScopedSingletonTest, MethodCallShareInstance){
+TEST(ScopedSingletonTest, MethodCallShareInstance){
     auto ss = StructuredLog();
     ASSERT_TRUE(ss->empty());
     methodCallEnrichesWithKeyAndValue("key", "value");
