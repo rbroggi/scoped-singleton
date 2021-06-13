@@ -71,13 +71,13 @@ namespace {
     };
 
     HTTPHandler businessHandler = [](HTTPResponse& resp, const HTTPRequest& req) {
-        std::cout << "REQ ---------------------------------------" << std::endl;
+        std::cout << "REQ ---------------------------------------" << std::endl << std::endl;
         std::cout << "HTTP "s << HTTPMethodStr(req.method) << " "s << req.uri
                   << std::endl << std::endl
-                  << req.body << std::endl << std::endl << std::endl;
+                  << req.body << std::endl << std::endl;
         std::cout << "ENDREQ -------------------------------------" << std::endl;
         resp = getDefaultResponse();
-        std::cout << "RESP---------------------------------------" << std::endl;
+        std::cout << "RESP----------------------------------------" << std::endl << std::endl;
         std::cout << resp.status << std::endl << resp.body << std::endl << std::endl;
         std::cout << "RESPEND-------------------------------------" << std::endl;
     };
@@ -90,9 +90,28 @@ protected:
 
 };
 
-// Non-anchored disjoint scopes
-TEST_F(HTTPTest, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScopes){
+TEST_F(HTTPTest, DecorateBusinessHandler){
+    // creating a handler that is enriched by several decorators
     auto handler = anchorLog(commonLogging(businessHandler));
     HTTPResponse resp;
     handler(resp, getDefaultRequest());
+    ASSERT_EQ(resp.status, HTTPStatus::HTTPStatusOk);
+}
+
+TEST_F(HTTPTest, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScopes){
+    // anchor for the structured log enable testing sent events
+    auto ss = StructuredLog();
+    // creating a handler that is enriched by several decorators
+    auto handler = commonLogging(businessHandler);
+    HTTPResponse resp;
+    handler(resp, getDefaultRequest());
+    ASSERT_EQ(resp.status, HTTPStatus::HTTPStatusOk);
+
+    // check that the log has all the data for monitoring
+    ASSERT_TRUE(ss->contains("HTTPMethod"));
+    ASSERT_TRUE(ss->contains("HTTPParameters"));
+    ASSERT_TRUE(ss->contains("HTTPRequestHeaders"));
+    ASSERT_TRUE(ss->contains("URI"));
+    ASSERT_TRUE(ss->contains("HTTPResponseHeaders"));
+    ASSERT_TRUE(ss->contains("HTTPStatus"));
 }
