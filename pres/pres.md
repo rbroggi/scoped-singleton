@@ -66,6 +66,45 @@ callback/
 ```
 ### Our JSON need to be enriched across all methods
 
+# Granularity of monitoring is 1 JSON per transaction
+
+```plantuml
+@startuml
+actor coord as "Client"
+coord -> APP: Request
+APP --> Kafka: send monitoring data (async)
+APP -> coord: Reply
+Kafka --> LogServer: Consumes Structured Log
+@enduml
+```
+
+# Granularity of monitoring is 1 JSON per transaction
+::: columns
+
+:::: column
+
+* Not overloading the server with logs
+* Transaction is a good granularity to adapt
+to have a scalable service
+
+::::
+
+:::: column
+
+```plantuml
+@startuml
+actor coord as "Client"
+coord -> APP: Request
+APP --> Kafka: send monitoring data (async)
+APP -> coord: Reply
+Kafka --> LogServer: Consumes Structured Log
+@enduml
+```
+
+::::
+
+:::
+
 # Acknowledgements
 
 1. [Sandor Dargo](https://www.sandordargo.com/)

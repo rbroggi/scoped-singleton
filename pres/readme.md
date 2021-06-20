@@ -1,10 +1,17 @@
-# This folder is meant to be a presentation deck
+# This folder is meant to host the presentation deck source-code 
 
 Here you will find only the markdown source of the presentation deck. 
-[pandoc](https://pandoc.org/) is used to convert the source code to a pdf file.
+[pandoc](https://pandoc.org/) is used to convert the source code to a pdf file
+using [beamer](https://en.wikipedia.org/wiki/Beamer_(LaTeX)) format and an addon 
+to pandoc called [pandoc-plantuml](https://www.npmjs.com/package/pandoc-plantuml).
 
-To convert it to PDF use the following command:
+To generate the presentation PDF run: 
 
-```bash
-docker run --rm -v "$(pwd)":/data pandoc/latex /data/pres.md -t beamer -o /data/pres.pdf
-```
+1. Build the image (which will compile the markdown):
+    ```bash
+    docker build -t pandoc-latex-plantuml .
+    ```
+2. Run the compilation inside the built container (this will generate a file `pres.pdf` under this folder): 
+    ```bash
+    docker run --rm -v "$(pwd)":/data --user `id -u`:`id -g` pandoc-latex-plantuml  /data/pres.md -t beamer -F pandoc-plantuml -o /data/pres.pdf
+    ```
