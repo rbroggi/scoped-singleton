@@ -3,7 +3,10 @@ title: Scoped singleton pattern
 author: Rodrigo Broggi  \linebreak rbroggi12@gmail.com
 institute: working@[Beat](https://thebeat.co/en/)
 linkstyle: bold
-theme: "Antibes"
+theme: "Madrid"
+urlcolor: blue
+linkstyle: bold
+aspectratio: 169
 date: 20/06/2021
 ---
 

@@ -12,6 +12,6 @@ To generate the presentation PDF run:
     docker build -t pandoc-latex-plantuml .
     ```
 2. Run the compilation inside the built container (this will generate a file `pres.pdf` under this folder): 
-    ```bash
-    docker run --rm -v "$(pwd)":/data --user `id -u`:`id -g` pandoc-latex-plantuml  /data/pres.md -t beamer -F pandoc-plantuml -o /data/pres.pdf
-    ```
+   ```bash
+   docker run --rm -v "$(pwd)":/data --user `id -u`:`id -g` pandoc-latex-plantuml  /data/pres.md -t beamer -F pandoc-plantuml -M date="$(date "+%d %B %Y")"  -V classoption:aspectratio=169 -H preamble.tex -o /data/pres.pdf
+   ```
