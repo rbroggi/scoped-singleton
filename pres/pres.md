@@ -166,4 +166,5 @@ std::shared_ptr<Data> sPtr = wPtr.lock();
 
 # Links contacts 
 
-* [![](https://i.stack.imgur.com/tskMh.png) Rodrigo Broggi](https://github.com/rbroggi)
+* [![](./img/github.png){ width=5% } rbroggi](https://github.com/rbroggi)
+* [![](./img/in.png){ width=4% } rbroggi](https://www.linkedin.com/in/rbroggi/)
