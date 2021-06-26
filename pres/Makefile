@@ -9,7 +9,7 @@ dockerimgbuild:
 	$(DOCKER) build -t $(DOCKER_IMG) .
 
 build: dockerimgbuild
-	$(DOCKER) run --rm -v "$(pwd)":/data --user `id -u`:`id -g` $(DOCKER_IMG)  /data/pres.md -t beamer -F pandoc-plantuml -M date="$(date "+%d %B %Y")"  -V classoption:aspectratio=169 -H preamble.tex -o /data/$(PRES_OUT)
+	$(DOCKER) run --rm -v `pwd`:/data --user `id -u`:`id -g` $(DOCKER_IMG)  /data/pres.md -t beamer -F pandoc-plantuml -M date="$(date "+%d %B %Y")"  -V classoption:aspectratio=169 -H preamble.tex -o /data/$(PRES_OUT)
 
 clean:
 	rm -r $(PRES_OUT)
