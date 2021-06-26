@@ -1,0 +1,19 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build presentation
+      run: cd pres && docker run --rm -v "$(pwd)":/data --user `id -u`:`id -g` pandoc-latex-plantuml /data/pres.md -t beamer -F pandoc-plantuml -M date="$(date "+%d %B %Y")" -V classoption:aspectratio=169 -H preamble.tex -o /data/pres.pdf
+
+    - uses: actions/upload-artifact@v2
+    - name: Upload presentation
+      with:
+        name: presentation.pdf
+        path: pres/pres.pdf
