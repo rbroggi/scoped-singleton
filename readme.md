@@ -61,11 +61,20 @@ Below you have some operations supported by the Makefile (for more, issue `make 
    $ make test TSTARGS="--gtest_filter=YourFilter"
    ```
 
-
 ### Presentation
 
 This repository embeds the presentation source code of the Scoped-Singleton pattern. 
 All information on how to compile the information can be found in the `pres` folder.
+
+### Github actions
+
+This repository leverages on [github action](https://github.com/features/actions). 
+You will be ble to see two different workflows:
+
+1. `.github/workflows/build-and-test.yml` which handles building and unit-testing the code repository
+2. `.github/workflows/presentation.yml` which builds the presentation and archives it. If you don't 
+    want to build the presentation on your own but only have a look at the resulting `.pdf` you can go 
+    to the repository in the `Actions` pane 
 
 ### Shortcomings 
 1. mind your scope: long-living reference

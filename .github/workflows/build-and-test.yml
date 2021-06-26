@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Buid and Unit-test
 
 on: [push]
 
