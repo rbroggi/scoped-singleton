@@ -156,6 +156,30 @@ std::shared_ptr<Data> sPtr = wPtr.lock();
 >
 > -- <cite>[cppreference](https://en.cppreference.com/w/cpp/memory/weak_ptr)</cite>
 
+# The pattern 
+
+\small
+```cpp
+std::shared_ptr<json> StructuredLog() {
+    // static reference to a non-owning json
+    static std::weak_ptr<json> _logNonOwningRef;
+    auto aLog = _logNonOwningRef.lock();
+    // If resource is not initialized, do init it and keep it in the local instance
+    if (not aLog) {
+        aLog = std::shared_ptr<json>(new json, [](json* logPtr) {
+            if (logPtr) {
+                // network call to send event to log server
+                remoteSend(*logPtr);
+            }
+            delete logPtr;
+        });
+        _logNonOwningRef = aLog;
+    }
+    return aLog;
+}
+``` 
+\normalsize
+
 # Acknowledgements
 
 1. [Sandor Dargo](https://www.sandordargo.com/)
