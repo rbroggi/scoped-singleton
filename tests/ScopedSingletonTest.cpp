@@ -8,6 +8,10 @@ namespace {
     void methodCallEnrichesWithKeyAndValue(std::string_view k, std::string_view v) {
         (*StructuredLog())[k] = v;
     }
+    void methodCallEnrichesWithKeyAndValueAndLog(std::string_view k, std::string_view v) {
+        (*StructuredLog())[k] = v;
+        std::cout << "MethodScope\n";
+    }
 }
 
 using std::string_literals::operator""s;
@@ -71,4 +75,44 @@ TEST(ScopedSingletonTest, MethodCallShareInstance){
     ASSERT_FALSE(ss->empty());
     ASSERT_TRUE(ss->contains("key"));
     ASSERT_EQ((*ss)["key"].as<std::string>(), "value");
+}
+
+TEST(ScopedSingletonExample, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScopes){
+    // scope 1
+    {
+        auto ss = StructuredLog();
+        (*ss)["key1"] = "value1";
+        std::cout << "Scope1\n";
+    }
+
+    // scope 2 - disjoint from scope 1
+    {
+        auto ss = StructuredLog();
+        (*ss)["key2"] = "value2";
+        std::cout << "Scope2\n";
+    }
+}
+
+TEST(ScopedSingletonExample, AnchoredDisjointScopes){
+    // scope 0
+    auto ss = StructuredLog();
+    std::cout << "Scope0\n";
+    // scope 1
+    {
+        (*ss)["key1"] = "value1";
+        std::cout << "Scope1\n";
+    }
+
+    // scope 2 - even if a new reference is issued, the longest living instance guarantees singleton
+    {
+        auto ss2 = StructuredLog();
+        (*ss2)["key2"] = "value2";
+        std::cout << "Scope2\n";
+    }
+}
+
+TEST(ScopedSingletonExample, MethodCallShareInstance){
+    auto ss = StructuredLog();
+    std::cout << "Scope0\n";
+    methodCallEnrichesWithKeyAndValueAndLog("key", "value");
 }

@@ -17,6 +17,9 @@ build: cmakebuild
 test: build
 	$(DOCKER) run --rm -v `pwd`:/app --user `id -u`:`id -g` $(DOCKER_IMG) ./$(BUILD_FOLDER)/tests/ScopedSingleton_tst --gtest_color=yes $(TSTARGS)
 
+utest:
+	$(DOCKER) run --rm -v `pwd`:/app --user `id -u`:`id -g` $(DOCKER_IMG) ./$(BUILD_FOLDER)/tests/ScopedSingleton_tst --gtest_color=yes $(TSTARGS)
+
 clean:
 	rm -r $(BUILD_FOLDER)
 
@@ -29,6 +32,7 @@ help:
 	@echo "... cmakebuild"
 	@echo "... dockerimgbuild"
 	@echo "... test"
+	@echo "... utest"
 
 # disallow any parallelism (-j) for Make. This is necessary since some
 # commands during the build process create temporary files that collide
