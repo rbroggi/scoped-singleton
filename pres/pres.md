@@ -156,6 +156,26 @@ std::shared_ptr<Data> sPtr = wPtr.lock();
 >
 > -- <cite>[cppreference](https://en.cppreference.com/w/cpp/memory/weak_ptr)</cite>
 
+
+# Ingredient number 2: RAII
+
+## RAII Alias: Scope-based Resource Management
+* Resource will be released at destruction time
+* Object destruction happens regardless of exceptions or unpredicted flow control
+
+## Example with std::shared_ptr
+```cpp
+{ // scope begins
+    auto customDestructor = [](item* logPtr) {
+                // logic with item at it's destruction time
+                delete logPtr;
+            }
+    std::shared_ptr<item> aLog(new item, customDestructor);
+    // logic...
+    
+} // scope ends -> destructor will be called (even if exception is thrown)
+```
+
 # The pattern 
 
 \small
