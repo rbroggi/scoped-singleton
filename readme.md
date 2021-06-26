@@ -2,6 +2,23 @@
 1. check with Daniel Parker if I can make some marketing of his library
 1. check with Jetbrains sponsorship for the pres
 
+### Building with Docker 
+1. Build your docker image:
+    ```shell
+    $ docker build -t cmake-image .
+    ```
+2. Run cmake to setup build:
+    ```shell
+    $ docker run --rm -v `pwd`:/app --user `id -u`:`id -g` cmake-image cmake -B./build
+    ```
+3. Run make to build:
+    ```shell
+    $  docker run --rm -v `pwd`:/app --user `id -u`:`id -g` cmake-image make -C build
+    ```
+4. Run unit-tests:
+   ```shell
+   $ docker run --rm -v `pwd`:/app --user `id -u`:`id -g` cmake-image ./build/tests/ScopedSingleton_tst
+   ```
 
 ### Context - structured logging in transaction info
 
