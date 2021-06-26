@@ -94,7 +94,19 @@ callback/
 :::: {.column width=90%}
 ```plantuml
 @startuml
-actor coord as "Client"
+skinparam sequence {
+ArrowColor #0C2344
+ActorBorderColor #0C2344
+LifeLineBorderColor #0C2344
+LifeLineBackgroundColor #0C2344
+ParticipantBorderColor #0C2344
+ParticipantFontName Impact
+ParticipantFontSize 17
+ParticipantFontColor #0C2344
+}
+
+actor coord as "Client" 
+
 coord -> APP: Request
 APP --> Kafka: send monitoring data (async)
 APP -> coord: Reply
@@ -119,7 +131,19 @@ to have a scalable service
 
 ```plantuml
 @startuml
-actor coord as "Client"
+skinparam sequence {
+ArrowColor #0C2344
+ActorBorderColor #0C2344
+LifeLineBorderColor #0C2344
+LifeLineBackgroundColor #0C2344
+ParticipantBorderColor #0C2344
+ParticipantFontName Impact
+ParticipantFontSize 17
+ParticipantFontColor #0C2344
+}
+
+actor coord as "Client" 
+
 coord -> APP: Request
 APP --> Kafka: send monitoring data (async)
 APP -> coord: Reply
@@ -199,6 +223,14 @@ std::shared_ptr<json> StructuredLog() {
 }
 ``` 
 \normalsize
+
+# Demo
+
+::: columns
+:::: {.column width=80%}
+![](./img/play.png){ width=60% }
+::::
+:::
 
 # Acknowledgements
 
