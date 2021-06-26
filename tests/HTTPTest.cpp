@@ -40,7 +40,7 @@ namespace {
 
 
     // commonLogging is a middleware HTTPHandlerFunc that logs the common HTTP parameters of the transaction
-    HTTPHandlerFunc commonLogging = [](HTTPHandler handler) -> HTTPHandler{
+    HTTPHandlerFunc commonLogging = [](HTTPHandler handler) -> HTTPHandler {
       return [handler](HTTPResponse& resp, const HTTPRequest& req) {
         // logging request attributes
         auto ss = StructuredLog();
@@ -78,7 +78,7 @@ namespace {
         std::cout << "ENDREQ -------------------------------------" << std::endl;
         std::cout << "RESP----------------------------------------" << std::endl << std::endl;
         std::cout << resp.status << std::endl << resp.body << std::endl << std::endl;
-        std::cout << "RESPEND-------------------------------------" << std::endl;
+        std::cout << "ENDRESP-------------------------------------" << std::endl;
     }
 
     HTTPHandler businessHandler = [](HTTPResponse& resp, const HTTPRequest& req) {
@@ -161,4 +161,90 @@ TEST_F(HTTPTest, WatchYourScopes) {
     ASSERT_TRUE(ss->contains("age"));
     ASSERT_EQ((*ss)["name"].as<std::string>(), "Jack");
     ASSERT_EQ((*ss)["age"].as<int>(), 20);
+}
+
+TEST(HTTPExample, DistinctTransactions) {
+    // this handler simply log the "name" and the "age" json attributes to the StructuredLog
+    HTTPHandler businessHandler = [](HTTPResponse& resp, const HTTPRequest& req) {
+      auto aJsonBody = jsoncons::json::parse(req.body);
+      (*StructuredLog())["name"] = aJsonBody["name"].as<std::string>();
+      (*StructuredLog())["age"] = aJsonBody["age"].as<int>();
+      // set resp
+      resp.status = HTTPStatusOk;
+      resp.headers = {{"Content-Type", "application/json"}};
+      resp.body =  R"({"uid": "123e4567-e89b-12d3-a456-426614174000")";
+    };
+
+
+    // first transaction
+    {
+        auto ss = StructuredLog();
+        auto req = HTTPRequest{
+                .method = HTTPMethod::POST,
+                .parameters = {{"domain"s, "internal"s}},
+                .headers = {{"Accept"s, "application/json"s}},
+                .uri = "https://scoped-singleton-app-demo/v1/users",
+                .body = R"({"name": "John", "surname": "Taylor", "age": 30})"
+        };
+        HTTPResponse resp;
+        businessHandler(resp, req);
+    }
+
+    // second transaction
+    {
+        auto ss = StructuredLog();
+        auto req = HTTPRequest{
+                .method = HTTPMethod::POST,
+                .parameters = {{"domain"s, "internal"s}},
+                .headers = {{"Accept"s, "application/json"s}},
+                .uri = "https://scoped-singleton-app-demo/v1/users",
+                .body = R"({"name": "Jack", "surname": "Taylor", "age": 20})"
+        };
+        HTTPResponse resp;
+        businessHandler(resp, req);
+    }
+}
+
+TEST(HTTPExample, DistinctTransactionsWithCommonLogging) {
+    // this handler simply log the "name" and the "age" json attributes to the StructuredLog
+    HTTPHandler businessTransaction = [](HTTPResponse& resp, const HTTPRequest& req) {
+      auto aJsonBody = jsoncons::json::parse(req.body);
+      (*StructuredLog())["name"] = aJsonBody["name"].as<std::string>();
+      (*StructuredLog())["age"] = aJsonBody["age"].as<int>();
+      // set resp
+      resp.status = HTTPStatusOk;
+      resp.headers = {{"Content-Type", "application/json"}};
+      resp.body =  R"({"uid": "123e4567-e89b-12d3-a456-426614174000")";
+    };
+
+    auto handler = commonLogging(businessTransaction);
+
+
+    // first transaction
+    {
+        auto ss = StructuredLog();
+        auto req = HTTPRequest{
+                .method = HTTPMethod::POST,
+                .parameters = {{"domain"s, "internal"s}},
+                .headers = {{"Accept"s, "application/json"s}},
+                .uri = "https://scoped-singleton-app-demo/v1/users",
+                .body = R"({"name": "John", "surname": "Taylor", "age": 30})"
+        };
+        HTTPResponse resp;
+        handler(resp, req);
+    }
+
+    // second transaction
+    {
+        auto ss = StructuredLog();
+        auto req = HTTPRequest{
+                .method = HTTPMethod::POST,
+                .parameters = {{"domain"s, "internal"s}},
+                .headers = {{"Accept"s, "application/json"s}},
+                .uri = "https://scoped-singleton-app-demo/v1/users",
+                .body = R"({"name": "Jack", "surname": "Taylor", "age": 20})"
+        };
+        HTTPResponse resp;
+        handler(resp, req);
+    }
 }
