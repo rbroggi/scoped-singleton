@@ -73,8 +73,8 @@ You will be ble to see two different workflows:
 
 1. `.github/workflows/build-and-test.yml` which handles building and unit-testing the code repository
 2. `.github/workflows/presentation.yml` which builds the presentation and archives it. If you don't 
-    want to build the presentation on your own but only have a look at the resulting `.pdf` you can go 
-    to the repository in the `Actions` pane 
+    want to build the presentation on your own but only have a look at the resulting `.pdf` you can 
+    download the archive from the latest [presentation workflow](https://github.com/rbroggi/scoped-singleton/actions/workflows/presentation.yml).
 
 ### Shortcomings 
 1. mind your scope: long-living reference
