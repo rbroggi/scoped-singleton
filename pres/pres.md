@@ -32,12 +32,12 @@ date: 20/06/2021
 
 ## Instrumenting an application with functional monitoring
 
-1. Monitoring done using structured (JSON) log 
+1. Functional Monitoring using semi-structured log (JSON) 
 1. Ease of use across all the application call stack
 1. Granularity of monitoring is 1 JSON per transaction
 1. Logging should happen also when flow exceptions occur
   
-# Monitoring done using structured (JSON) log
+# Functional Monitoring using semi-structured log (JSON)
 ### Common data:
   ```json
   {
@@ -54,7 +54,7 @@ date: 20/06/2021
   }
   ```
 
-# Monitoring done using structured (JSON) log
+# Functional Monitoring using semi-structured log (JSON)
 ### Business data:
   ```json
   {
@@ -88,42 +88,13 @@ callback/
 ### Our JSON need to be enriched across all methods
 
 # Granularity of monitoring is 1 JSON per transaction
-
-::: columns
-
-:::: {.column width=90%}
-```plantuml
-@startuml
-skinparam sequence {
-ArrowColor #0C2344
-ActorBorderColor #0C2344
-LifeLineBorderColor #0C2344
-LifeLineBackgroundColor #0C2344
-ParticipantBorderColor #0C2344
-ParticipantFontName Impact
-ParticipantFontSize 17
-ParticipantFontColor #0C2344
-}
-
-actor coord as "Client" 
-
-coord -> APP: Request
-APP --> Kafka: send monitoring data (async)
-APP -> coord: Reply
-Kafka --> LogServer: Consumes Structured Log
-@enduml
-```
-:::: 
-:::
-
-# Granularity of monitoring is 1 JSON per transaction
 ::: columns
 
 :::: column
 
 * Not overloading the server with logs
-* Transaction is a good granularity to adapt
-to have a scalable service
+* Scales with the application transaction rate
+* Functionally makes sense to have transaction-view  
 
 ::::
 
@@ -145,9 +116,9 @@ ParticipantFontColor #0C2344
 actor coord as "Client" 
 
 coord -> APP: Request
-APP --> Kafka: send monitoring data (async)
+APP --> Broker: send monitoring data (async)
 APP -> coord: Reply
-Kafka --> LogServer: Consumes Structured Log
+Broker --> LogServer: Consumes Structured Log
 @enduml
 ```
 
@@ -203,7 +174,7 @@ std::shared_ptr<Data> sPtr = wPtr.lock();
 # The pattern 
 
 \small
-```cpp
+```{.cpp .numberLines}
 std::shared_ptr<json> StructuredLog() {
     // static reference to a non-owning json
     static std::weak_ptr<json> _logNonOwningRef;
@@ -223,6 +194,25 @@ std::shared_ptr<json> StructuredLog() {
 }
 ``` 
 \normalsize
+
+# Benefits and Draw-backs
+
+::: columns
+:::: {.column width=50%}
+## Benefits
+1. Convenience of use
+2. Tunable efficiency through use of scopes
+3. Concise implementation
+4. Reliability derived from RAII
+5. **Testability of your logging**
+::::
+
+:::: {.column width=40%}
+## Draw-backs
+1. Watch-out for static members and for global scopes
+2. Careful with concurrency
+::::
+:::
 
 # Demo
 
