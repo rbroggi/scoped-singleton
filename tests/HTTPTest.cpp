@@ -177,6 +177,7 @@ TEST(HTTPExample, DistinctTransactions) {
 
 
     // first transaction
+    std::cout << "Start First transaction" << std::endl;
     {
         auto ss = StructuredLog();
         auto req = HTTPRequest{
@@ -189,8 +190,10 @@ TEST(HTTPExample, DistinctTransactions) {
         HTTPResponse resp;
         businessHandler(resp, req);
     }
+    std::cout << "End First transaction" << std::endl << std::endl;
 
     // second transaction
+    std::cout << "Start Second transaction" << std::endl;
     {
         auto ss = StructuredLog();
         auto req = HTTPRequest{
@@ -203,6 +206,7 @@ TEST(HTTPExample, DistinctTransactions) {
         HTTPResponse resp;
         businessHandler(resp, req);
     }
+    std::cout << "End Second transaction" << std::endl << std::endl;
 }
 
 TEST(HTTPExample, DistinctTransactionsWithCommonLogging) {
@@ -221,8 +225,8 @@ TEST(HTTPExample, DistinctTransactionsWithCommonLogging) {
 
 
     // first transaction
+    std::cout << "Start First transaction" << std::endl;
     {
-        auto ss = StructuredLog();
         auto req = HTTPRequest{
                 .method = HTTPMethod::POST,
                 .parameters = {{"domain"s, "internal"s}},
@@ -234,9 +238,11 @@ TEST(HTTPExample, DistinctTransactionsWithCommonLogging) {
         handler(resp, req);
     }
 
+    std::cout << "End First transaction" << std::endl << std::endl;
+
     // second transaction
+    std::cout << "Start Second transaction" << std::endl;
     {
-        auto ss = StructuredLog();
         auto req = HTTPRequest{
                 .method = HTTPMethod::POST,
                 .parameters = {{"domain"s, "internal"s}},
@@ -247,4 +253,5 @@ TEST(HTTPExample, DistinctTransactionsWithCommonLogging) {
         HTTPResponse resp;
         handler(resp, req);
     }
+    std::cout << "End Second transaction" << std::endl << std::endl;
 }
