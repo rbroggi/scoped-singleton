@@ -159,7 +159,7 @@ std::shared_ptr<Data> sPtr = wPtr.lock();
 * Object destruction happens regardless of exceptions or unpredicted flow control
 
 ## Example with std::shared_ptr
-```cpp
+```{.cpp .numberLines}
 { // scope begins
     auto customDestructor = [](item* logPtr) {
                 // logic with item at it's destruction time
@@ -174,7 +174,7 @@ std::shared_ptr<Data> sPtr = wPtr.lock();
 # The pattern 
 
 \small
-```{.cpp .numberLines}
+```{.cpp .numberLines .lineAnchors startFrom="1"}
 std::shared_ptr<json> StructuredLog() {
     // static reference to a non-owning json
     static std::weak_ptr<json> _logNonOwningRef;

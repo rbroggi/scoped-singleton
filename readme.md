@@ -1,7 +1,7 @@
 # Scoped-singleton 
 
 This repository embeds the 'scoped-singleton' pattern. An interesting and elegant pattern that leverages 
-on [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization#:~:text=In%20RAII%2C%20holding%20a%20resource,finalization)%2C%20by%20the%20destructor.) and
+on [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization#:~:text=In%20RAII%2C%20holding%20a%20resource,finalization) and
 [weak pointers](https://en.cppreference.com/w/cpp/memory/weak_ptr). 
 
 
