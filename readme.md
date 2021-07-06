@@ -7,7 +7,7 @@ on [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization#:
 
 ## Usecase demo
 In this repository we showcase the pattern as an application instrumentation for data monitoring. 
-Some benefits the pattern carries on a this use-case are:
+Some benefits the pattern carries are:
 * reliability: through the use of RAII, delivery of the log/monitoring data to the log-server
   is guaranteed even in case flow control is unexpected (e.g.: exceptions).
 * efficiency: the scope-oriented nature of this pattern allows for good fine-tuning on the granularity
@@ -64,7 +64,7 @@ Below you have some operations supported by the Makefile (for more, issue `make 
 ### Presentation
 
 This repository embeds the presentation source code of the Scoped-Singleton pattern. 
-All information on how to compile the information can be found in the `pres` folder.
+All information on how to compile/build the presentation can be found in the `pres` folder.
 
 ### Github actions
 
@@ -80,6 +80,7 @@ You will be ble to see two different workflows:
 1. mind your scope: long-living reference
 2. mind your scope: no anchor
 3. thead-safety needs to be properly studied if you have a read-write API 
+3. callback in destructor needs to be `noexcept` (special thanks to [GuillaumeDua](https://github.com/GuillaumeDua))
 
 # References and acknowledgements
 
