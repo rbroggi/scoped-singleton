@@ -1,7 +1,7 @@
 ---
 title: Scoped singleton pattern
 author: Rodrigo Broggi  \linebreak rbroggi12@gmail.com
-institute: working@[Beat](https://thebeat.co/en/)
+institute: working@[Amadeus](https://amadeus.com/en)
 linkstyle: bold
 theme: "Madrid"
 urlcolor: blue
@@ -17,8 +17,8 @@ date: 20/06/2021
 :::: {.column width=70%}
 
 * Brazilian/Italian living in France ![](./img/br.png){ width=5% } ![](./img/it.png){ width=5% } ![](./img/fr.png){ width=5% }
-* Currently, Golang SE @[Beat](https://thebeat.co/en/)
-* Previously, C++ SE @[Amadeus](https://amadeus.com/it)
+* Soon, Golang SE @[Beat](https://thebeat.co/en/)
+* Currently, C++ SE @[Amadeus](https://amadeus.com/it)
 * Still before, Java SE @[Unicredit](https://www.unicredit.it/it/privati.html)
 
 ::::
