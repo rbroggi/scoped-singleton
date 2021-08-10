@@ -74,7 +74,7 @@ date: 20/06/2021
 ### Callback look
 
 ```
-callback/
+callback
 |-- method1
 |   |-- method11
 |   |-- method12
@@ -195,6 +195,38 @@ std::shared_ptr<json> StructuredLog() {
 ``` 
 \normalsize
 
+# Usage
+
+```cpp
+void method1() {
+    StructuredLog()["field1"] = "value1";
+}
+void method2() {
+    StructuredLog()["field2"] = "value2";
+}
+```
+
+::: columns
+:::: {.column width=50%}
+```cpp
+{ // callback scope
+    auto ss = StructuredLog(); 
+    method1(); 
+    method2();
+} // end scope - remoteSend 
+```
+:::: 
+:::: {.column width=50%}
+### Sent Log
+```json
+{
+  "field1": "value1",
+  "field2": "value2"
+} 
+```
+::::
+:::
+
 # Benefits and Drawbacks
 
 ::: columns
@@ -214,6 +246,43 @@ std::shared_ptr<json> StructuredLog() {
 3. No exceptions on Destructor
 ::::
 :::
+
+# Demo Dummy Framework
+
+::: columns
+
+:::: {.column width=50%}
+```cpp
+struct HTTPRequest {
+    HTTPMethod method;
+    HTTPParameters parameters;
+    HTTPHeaders headers;
+    std::string uri;
+    std::string body;
+};
+```
+::::
+
+:::: {.column width=50%}
+```cpp
+struct HTTPResponse {
+    HTTPHeaders headers;
+    HTTPStatus status;
+    std::string body;
+};
+```
+::::
+
+:::
+
+```cpp
+
+
+using HTTPHandler 
+    = std::function<void(HTTPResponse& resp, const HTTPRequest& req)>;
+
+using HTTPHandlerFunc = std::function<HTTPHandler(HTTPHandler)>;
+```
 
 # Demo
 
