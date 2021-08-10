@@ -159,9 +159,9 @@ TEST_F(HTTPTest, WatchYourScopes) {
 
     ASSERT_TRUE(ss->contains("name"));
     ASSERT_TRUE(ss->contains("age"));
-    ASSERT_EQ((*ss)["name"].as<std::string>(), "Jack");
-    ASSERT_EQ((*ss)["age"].as<int>(), 20);
-}
+        ASSERT_EQ((*ss)["name"].as<std::string>(), "Jack");
+        ASSERT_EQ((*ss)["age"].as<int>(), 20);
+    }
 
 TEST(HTTPExample, DistinctTransactions) {
     // this handler simply log the "name" and the "age" json attributes to the StructuredLog
