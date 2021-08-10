@@ -195,7 +195,7 @@ std::shared_ptr<json> StructuredLog() {
 ``` 
 \normalsize
 
-# Benefits and Draw-backs
+# Benefits and Drawbacks
 
 ::: columns
 :::: {.column width=50%}
@@ -208,9 +208,10 @@ std::shared_ptr<json> StructuredLog() {
 ::::
 
 :::: {.column width=40%}
-## Draw-backs
+## Drawbacks
 1. Watch-out for static members and for global scopes
 2. Careful with concurrency
+3. No exceptions on Destructor
 ::::
 :::
 
