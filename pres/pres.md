@@ -1,7 +1,7 @@
 ---
 title: Scoped singleton pattern
 author: Rodrigo Broggi  \linebreak rbroggi12@gmail.com
-institute: working@[Amadeus](https://amadeus.com/en)
+institute: \@[Amadeus](https://amadeus.com/en)
 linkstyle: bold
 theme: "Madrid"
 urlcolor: blue
@@ -128,13 +128,21 @@ Broker --> LogServer: Consumes Structured Log
 
 # Ingredient number 1: the std::weak_ptr
 
+###
+> 'is a smart pointer that holds a non-owning reference to an object that is managed by std::shared_ptr'
+>
+> -- <cite>[cppreference](https://en.cppreference.com/w/cpp/memory/weak_ptr)</cite>
 
+### Notice
+            
 ::: columns
 
 :::: {.column width=40%}
+                                                          
 * can't be dereferenced
 * can't be tested for nullness
-* track _dangling_ pointers without interfering with their reference count  
+* track _dangling_ pointers without interfering with their reference count
+
 ::::
 
 :::: {.column width=60%}
@@ -145,11 +153,6 @@ std::shared_ptr<Data> sPtr = wPtr.lock();
 ::::
 
 :::
-
-### 
-> 'is a smart pointer that holds a non-owning reference to an object that is managed by std::shared_ptr'
->
-> -- <cite>[cppreference](https://en.cppreference.com/w/cpp/memory/weak_ptr)</cite>
 
 
 # Ingredient number 2: RAII
@@ -199,10 +202,10 @@ std::shared_ptr<json> StructuredLog() {
 
 ```cpp
 void method1() {
-    StructuredLog()["field1"] = "value1";
+    (*StructuredLog())["field1"] = "value1";
 }
 void method2() {
-    StructuredLog()["field2"] = "value2";
+    (*StructuredLog())["field2"] = "value2";
 }
 ```
 
