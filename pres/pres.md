@@ -1,7 +1,7 @@
 ---
 title: Scoped singleton pattern
 author: Rodrigo Broggi  \linebreak rbroggi12@gmail.com
-institute: working@[Beat](https://thebeat.co/en/)
+institute: \@[Beat](https://thebeat.co/en/)
 linkstyle: bold
 theme: "Madrid"
 urlcolor: blue
@@ -199,10 +199,10 @@ std::shared_ptr<json> StructuredLog() {
 
 ```cpp
 void method1() {
-    StructuredLog()["field1"] = "value1";
+    (*StructuredLog())["field1"] = "value1";
 }
 void method2() {
-    StructuredLog()["field2"] = "value2";
+    (*StructuredLog())["field2"] = "value2";
 }
 ```
 
