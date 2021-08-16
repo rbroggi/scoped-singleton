@@ -128,6 +128,12 @@ Broker --> LogServer: Consumes Structured Log
 
 # Ingredient number 1: the std::weak_ptr
 
+###
+> 'is a smart pointer that holds a non-owning reference to an object that is managed by std::shared_ptr'
+>
+> -- <cite>[cppreference](https://en.cppreference.com/w/cpp/memory/weak_ptr)</cite>
+
+### Notice
 
 ::: columns
 
@@ -145,11 +151,6 @@ std::shared_ptr<Data> sPtr = wPtr.lock();
 ::::
 
 :::
-
-### 
-> 'is a smart pointer that holds a non-owning reference to an object that is managed by std::shared_ptr'
->
-> -- <cite>[cppreference](https://en.cppreference.com/w/cpp/memory/weak_ptr)</cite>
 
 
 # Ingredient number 2: RAII
