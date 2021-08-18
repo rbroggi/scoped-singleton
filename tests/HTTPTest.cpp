@@ -94,6 +94,7 @@ protected:
 
 };
 
+// make utest TSTARGS="--gtest_filter=HTTPTest.DecorateBusinessHandler"
 TEST_F(HTTPTest, DecorateBusinessHandler){
     // creating a handler that is enriched by several decorators
     auto handler = anchorLog(commonLogging(businessHandler));
@@ -102,6 +103,7 @@ TEST_F(HTTPTest, DecorateBusinessHandler){
     ASSERT_EQ(resp.status, HTTPStatus::HTTPStatusOk);
 }
 
+// make utest TSTARGS="--gtest_filter=HTTPTest.DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScopes"
 TEST_F(HTTPTest, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScopes){
     // anchor for the structured log enable testing sent events
     auto ss = StructuredLog();
@@ -120,6 +122,7 @@ TEST_F(HTTPTest, DifferentInstancesWouldBeCreatedInCaseOfNonAnchoredDisjointScop
     ASSERT_TRUE(ss->contains("HTTPStatus"));
 }
 
+// make utest TSTARGS="--gtest_filter=HTTPTest.ExceptionsDontBlockEventSending"
 TEST_F(HTTPTest, ExceptionsDontBlockEventSending) {
     HTTPHandler throwingHandler = [](HTTPResponse& resp, const HTTPRequest& req) {
         throw 1;
@@ -130,6 +133,7 @@ TEST_F(HTTPTest, ExceptionsDontBlockEventSending) {
     ASSERT_ANY_THROW(handler(resp, getDefaultRequest()));
 }
 
+// make utest TSTARGS="--gtest_filter=HTTPTest.WatchYourScopes"
 TEST_F(HTTPTest, WatchYourScopes) {
     // this handler simply log the "name" and the "age" json attributes to the StructuredLog
     HTTPHandler businessTransaction = [](HTTPResponse& resp, const HTTPRequest& req) {
@@ -163,6 +167,7 @@ TEST_F(HTTPTest, WatchYourScopes) {
         ASSERT_EQ((*ss)["age"].as<int>(), 20);
     }
 
+// make utest TSTARGS="--gtest_filter=HTTPExample.DistinctTransactions"
 TEST(HTTPExample, DistinctTransactions) {
     // this handler simply log the "name" and the "age" json attributes to the StructuredLog
     HTTPHandler businessHandler = [](HTTPResponse& resp, const HTTPRequest& req) {
@@ -209,6 +214,7 @@ TEST(HTTPExample, DistinctTransactions) {
     std::cout << "End Second transaction" << std::endl << std::endl;
 }
 
+// make utest TSTARGS="--gtest_filter=HTTPExample.DistinctTransactionsWithCommonLogging"
 TEST(HTTPExample, DistinctTransactionsWithCommonLogging) {
     // this handler simply log the "name" and the "age" json attributes to the StructuredLog
     HTTPHandler businessTransaction = [](HTTPResponse& resp, const HTTPRequest& req) {
@@ -237,7 +243,6 @@ TEST(HTTPExample, DistinctTransactionsWithCommonLogging) {
         HTTPResponse resp;
         handler(resp, req);
     }
-
     std::cout << "End First transaction" << std::endl << std::endl;
 
     // second transaction
