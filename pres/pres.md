@@ -296,7 +296,8 @@ using HTTPHandlerFunc = std::function<HTTPHandler(HTTPHandler)>;
 # Acknowledgements
 
 1. [Sandor Dargo](https://www.sandordargo.com/)
-1. [Anthony Buisse](https://www.linkedin.com/in/anthony-buisset/)
+1. [Anthony Buisset](https://www.linkedin.com/in/anthony-buisset/)
+1. [Guillaume Dua](https://github.com/GuillaumeDua)
 1. [jsoncons library](https://github.com/danielaparker/jsoncons) 
 1. [Beat](https://thebeat.co/)
 1. [JetBrains](https://www.jetbrains.com/)
