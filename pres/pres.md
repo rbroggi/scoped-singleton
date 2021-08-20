@@ -298,7 +298,7 @@ using HTTPHandlerFunc = std::function<HTTPHandler(HTTPHandler)>;
 # Acknowledgements
 
 1. [Sandor Dargo](https://www.sandordargo.com/)
-2. [Anthony Buisse](https://www.linkedin.com/in/anthony-buisset/)
+2. [Anthony Buisset](https://www.linkedin.com/in/anthony-buisset/)
 3. [Guillaume Dua](https://github.com/GuillaumeDua)
 
 # Links contacts 
