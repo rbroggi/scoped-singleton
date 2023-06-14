@@ -26,11 +26,9 @@ clean:
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
-	@echo "... all (the default if no target is provided)"
-	@echo "... clean"
-	@echo "... build"
-	@echo "... cmakebuild"
 	@echo "... dockerimgbuild"
+	@echo "... cmakebuild"
+	@echo "... build"
 	@echo "... test"
 	@echo "... utest"
 
