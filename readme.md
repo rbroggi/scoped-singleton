@@ -82,7 +82,6 @@ You will be ble to see two different workflows:
 3. thead-safety needs to be properly studied if you have a read-write API 
 3. callback in destructor needs to be `noexcept` (special thanks to [GuillaumeDua](https://github.com/GuillaumeDua))
 
-# References and acknowledgements
 
 
 
