@@ -100,27 +100,7 @@ callback
 
 :::: column
 
-```plantuml
-@startuml
-skinparam sequence {
-ArrowColor #0C2344
-ActorBorderColor #0C2344
-LifeLineBorderColor #0C2344
-LifeLineBackgroundColor #0C2344
-ParticipantBorderColor #0C2344
-ParticipantFontName Impact
-ParticipantFontSize 17
-ParticipantFontColor #0C2344
-}
-
-actor coord as "Client" 
-
-coord -> APP: Request
-APP --> Broker: send monitoring data (async)
-APP -> coord: Reply
-Broker --> LogServer: Consumes Structured Log
-@enduml
-```
+![](./img/transaction-monitoring-sequence.png){ width=100% }
 
 ::::
 
